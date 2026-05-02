@@ -2,6 +2,7 @@ import React from 'react'
 import { appPlans } from '../assets/assets';
 import Footer from '../components/Footer';
 
+
 interface Plan {
   id : string;
   name : string;
@@ -15,7 +16,7 @@ const Pricing = () => {
   const[plans] = React.useState<Plan[]>(appPlans)
 
   const handlePurchase = async (planId:string) => {
-        
+    console.log("Buying plan:", planId);
   }
   return (
     <>
