@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { LaptopIcon, Loader2Icon, MessageSquareIcon, SmartphoneIcon, TabletIcon, XIcon } from 'lucide-react';
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { ArrowBigDownDashIcon, EyeIcon, EyeOffIcon, FullscreenIcon, LaptopIcon, Loader2Icon, MessageSquareIcon, SaveIcon, SmartphoneIcon, TabletIcon, XIcon } from 'lucide-react';
 import type { Project } from '../types';
 import { dummyConversations, dummyProjects } from '../assets/assets';
 
@@ -23,6 +23,18 @@ const Projects = () => {
         setIsGenerating(project.current_code ? false : true);
       }
     },2000)
+  }
+
+  const saveProject = async () => {
+
+  }
+
+  const downloadCode = ()=> {
+
+  }
+
+  const togglePublish = async ()=> {
+
   }
 
   useEffect(()=> {
@@ -62,7 +74,22 @@ const Projects = () => {
           <LaptopIcon onClick={()=> setDevice('desktop')} className={`size-6 p-1 cursor-pointer rounded ${device === 'desktop' ? 'bg-gray-700' : ''}`}/>
         </div>
         {/* right */}
-        <div></div>
+        <div className='flex items-center justify-end gap-3 flex-1 text-xs sm:text-sm'>
+          <button onClick={saveProject} className='max-sm:hidden bg-gray-800 hover:bg-gray-700 text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors border border-gray-700 capitalize' disabled ={isSaving}>
+            {isSaving ? <Loader2Icon className='size-16 animate-spin'/> : <SaveIcon size={16}/>}
+              save
+          </button>
+          <Link className='flex items-center gap-2 px-4 py-1 rounded sm:rounded-sm transition-colors border border-gray-700 hover:border-gray-500 capitalize' target='_blank' to ={`/preview/${projectId}`}>
+            <FullscreenIcon size={16}/>  preview
+          </Link>
+          <button onClick={downloadCode} className='bg-linear-to-br from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors capitalize'>
+            <ArrowBigDownDashIcon size={16}/>  download
+          </button>
+          <button onClick={togglePublish} className='bg-linear-to-br from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white px-3.5 py-1 flex items-center gap-2 rounded sm:rounded-sm transition-colors capitalize'>
+            {project.isPublished ? <EyeOffIcon size={16}/> : <EyeIcon size={16}/>}
+            {project.isPublished ? ' unpublish' : ' publish'}
+          </button>
+        </div>
       </div>
     </div>
   ) : (
