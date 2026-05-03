@@ -1,7 +1,7 @@
-import { BotIcon, EyeIcon, UserIcon } from 'lucide-react';
+import { BotIcon, EyeIcon, Loader2Icon, SendIcon, UserIcon } from 'lucide-react';
 import type { Message, Project, Version } from '../types';
 import { Link } from 'react-router-dom';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface SidebarProps {
     isMenuOpen  : boolean;
@@ -11,9 +11,20 @@ interface SidebarProps {
     setIsGenerating : (isGenerating : boolean)=> void;
 }
 const Sidebar = ({isMenuOpen , project , setProject,isGenerating, setIsGenerating} : SidebarProps) => {
-    const messageRef = useRef<HTMLElement>(null);
+
+    const messageRef = useRef<HTMLDivElement>(null);
+    const [input , setInput] = useState('')
+
     const handleRolleBack = async (versionId : string) => {
 
+    };
+
+    const handleRevisions = async (e : React.FormEvent) => {
+        e.preventDefault();
+        setIsGenerating(true);
+        setTimeout (()=> {
+            setIsGenerating(false)
+        },3000)
     }
     useEffect(()=> {
         if(messageRef.current){
@@ -21,10 +32,10 @@ const Sidebar = ({isMenuOpen , project , setProject,isGenerating, setIsGeneratin
         }
     },[project.conversation.length, isGenerating]);
   return (
-    <div className={`h-full max-sm:w-sm rounded-xl bg-gray-900 border border-gray-800 transition-all ${isMenuOpen ? 'max-sm:w-0 overflow-hidden' : 'w-full'}`}>
+    <div className={`h-full max-sm:w-sm rounded-xl bg-gray-900 border border-gray-800 transition-all ${isMenuOpen ? 'max-sm:w-0 overflow-hidden' : 'w-[30%]'}`}>
         <div className='flex flex-col h-full'>
             {/* message container */}
-            <div className='flex-1 overflow-y-auto no-scrollbar px-3 flex flex-col gap-3'>
+            <div className='flex-1 overflow-y-auto no-scrollbar px-3 flex flex-col gap-4'>
                 {[...project.conversation , ...project.versions].sort((a,b)=> new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()).map((message)=> {
                     const isMessage = 'content' in message;
                     if(isMessage){
@@ -85,11 +96,16 @@ const Sidebar = ({isMenuOpen , project , setProject,isGenerating, setIsGeneratin
                         </div>
                     )
                 }
-                <div ref={messageRef}/>
+                <div ref={messageRef }/>
             </div>
             {/* input area */} 
-            <form>
-
+            <form onSubmit={handleRevisions} className='m-3 relative'>
+                <div className='flex items-center gap-2'>
+                    <textarea onChange={(e)=> setInput(e.target.value)} value={input} rows={4} placeholder='Describe your website or request changes...' className='flex-1 p-3 rounded-xl resize-none texi-sm outline-none ring ring-gray-700 focus:ring-indigo-500 bg-gray-800 text-gray-100 placeholder-gray-400 transition-all' disabled = {isGenerating}/>
+                    <button className='absolute bottom-2.5 right-2.5 rounded-full bg-linear-to-br from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 text-white transition-colors disabled:opacity-60 ' disabled ={isGenerating || !input.trim()}>
+                        {isGenerating ? <Loader2Icon className='size-7 p-1.5 animate-spin text-white'/> : <SendIcon className='size-7 p-1.5 text-white'/>}
+                    </button>
+                </div>
             </form>
         </div>
     </div>
