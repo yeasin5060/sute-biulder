@@ -42,6 +42,7 @@ const ProjectPreview = forwardRef<ProjectPreviewRef,ProjectPreviewProps> (({proj
                     srcDoc={injectPreview(project.current_code)}
                     className={`h-full max-sm:w-full ${resolutions[device]} mx-auto transition-all`}
                 />
+                {showEditorPanel}
             </>
         ) : isGenerating && (
             <div>
