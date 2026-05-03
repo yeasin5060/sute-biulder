@@ -91,6 +91,14 @@ const Projects = () => {
           </button>
         </div>
       </div>
+      <div className='flex flex-1 overflow-auto'>
+        <div>
+          sidebar
+        </div>
+        <div className='flex-1 p-2 pl-0'>
+          preview
+        </div>
+      </div>
     </div>
   ) : (
     <div className='flex items-center justify-center h-screen'>
